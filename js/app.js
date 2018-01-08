@@ -22,25 +22,25 @@ function chatInteraction() {
     var msgInHtml = '<li><b>' + userName + ': ' + '</b>' + userMessage + '</li>';
     // Agregar estructura HTML a lista no ordenada (área de mensajes)
     $(msgList).append(msgInHtml);
-    
 
     firebase.database().ref('chat').push({
       name: userName,
-      message: message
+      message: userMessage
     });
   });
 }
 
-// firebase.database().ref('chat').on('value', function(snapshot) {
-//   var msgInHtml = '';
-//   snapshot.each(function(e) {
-//     var element = e.val();
-//     var userName = element.name;
-//     var userMessage = element.message;
-//     msgInHtml += '<li><b>' + userName + ': ' + '</b>' + userMessage + '</li>';
-//   });
-//   // Agregar estructura HTML a lista no ordenada (área de mensajes)
-//   $(msgList).append(msgInHtml);
-// });
+firebase.database().ref('chat').on('value', function(snapshot) {
+  var msgInHtml = '';
+  var msgList = $('#msg-list');
+  snapshot.forEach(function(e) {
+    var element = e.val();
+    var userName = element.name;
+    var userMessage = element.message;
+    msgInHtml += '<li><b>' + userName + ': ' + '</b>' + userMessage + '</li>';
+  });
+  // Agregar estructura HTML a lista no ordenada (área de mensajes)
+  $(msgList).append(msgInHtml);
+});
 
 $(document).ready(begin);
